@@ -21,7 +21,7 @@ jobs:
       run: |
         # Alpine needs to install zip
         apk add --no-cache zip
-        npm install -g yarn
+        # Skip npm install -g yarn as it's already installed
         yarn
 
     - name: Build for production
