@@ -1,0 +1,40 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:23-alpine
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        # Alpine needs to install zip
+        apk add --no-cache zip
+        npm install -g yarn
+        yarn
+
+    - name: Build for production
+      run: yarn build
+
+    - name: Run unit tests
+      run: yarn unit
+
+    - name: Zip dist folder
+      run: zip -r dist.zip dist/
+      
+    - name: Upload zip artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-artifact
+        path: dist.zip
