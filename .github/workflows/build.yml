@@ -16,20 +16,33 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        path: project
 
     - name: Install dependencies
+      working-directory: ${{ github.workspace }}/project
       run: |
+        # Alpine needs to install zip
         apk add --no-cache zip
         yarn
 
     - name: Build for production
+      working-directory: ${{ github.workspace }}/project
       run: yarn build
-      
+
     - name: Zip dist folder
-      run: zip -r dist.zip dist/
+      working-directory: ${{ github.workspace }}/project
+      run: |
+        # Get absolute path of dist directory
+        DIST_PATH=$(realpath ./dist)
+        echo "Using absolute path for dist: $DIST_PATH"
+        
+        # Create zip with absolute path reference
+        cd /
+        zip -r ${{ github.workspace }}/project/dist.zip $DIST_PATH
       
     - name: Upload zip artifact
       uses: actions/upload-artifact@v4
       with:
         name: dist-artifact
-        path: dist.zip
+        path: ${{ github.workspace }}/project/dist.zip
