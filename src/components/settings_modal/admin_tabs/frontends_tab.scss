@@ -1,0 +1,29 @@
+.frontends-tab {
+  .cards-list {
+    padding: 0;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .overlay {
+    position: absolute;
+    background: var(--bg);
+    // fix buttons showing through
+    z-index: 2;
+    opacity: 0.9;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  dd {
+    text-overflow: ellipsis;
+    word-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: hidden;
+    max-width: 10em;
+  }
+}

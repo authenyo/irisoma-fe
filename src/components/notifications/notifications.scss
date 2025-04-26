@@ -1,0 +1,194 @@
+@import "../../variables";
+
+.Notifications {
+  &:not(.minimal) {
+    // a bit of a hack to allow scrolling below notifications
+    padding-bottom: 15em;
+  }
+
+  .loadmore-error {
+    color: $fallback--text;
+    color: var(--text, $fallback--text);
+  }
+
+  .notification {
+    position: relative;
+
+    .notification-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+
+    &.unseen {
+      .notification-overlay {
+        background-image: linear-gradient(135deg, var(--badgeNotification, $fallback--cRed) 4px, transparent 10px);
+      }
+    }
+  }
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.notification {
+  box-sizing: border-box;
+
+  &:hover .animated.Avatar {
+    canvas {
+      display: none;
+    }
+
+    img {
+      visibility: visible;
+    }
+  }
+
+  &:last-child .Notification {
+    border-bottom: none;
+  }
+
+  .non-mention {
+    display: flex;
+    flex: 1;
+    flex-wrap: nowrap;
+    padding: 0.6em;
+    min-width: 0;
+
+    .avatar-container {
+      width: 32px;
+      height: 32px;
+    }
+
+    .faint {
+      --link: var(--faintLink);
+      --text: var(--faint);
+    }
+  }
+
+  .follow-request-accept {
+    &:hover {
+      color: $fallback--text;
+      color: var(--text, $fallback--text);
+    }
+  }
+
+  .follow-request-reject {
+    &:hover {
+      color: $fallback--cRed;
+      color: var(--cRed, $fallback--cRed);
+    }
+  }
+
+  .follow-text,
+  .move-text {
+    padding: 0.5em 0;
+    overflow-wrap: break-word;
+    display: flex;
+    justify-content: space-between;
+
+    .follow-name {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  /* TODO cleanup this */
+  .Status {
+    flex: 1;
+  }
+
+  time {
+    white-space: nowrap;
+  }
+
+  .notification-right {
+    flex: 1;
+    padding-left: 0.8em;
+    min-width: 0;
+
+    .timeago {
+      min-width: 3em;
+      text-align: right;
+    }
+
+    .timeago-link {
+      margin-right: 0.2em;
+    }
+
+    .expand-icon {
+      .svg-inline--fa {
+        margin-left: 0.25em;
+      }
+    }
+  }
+
+  .emoji-reaction-emoji {
+    font-size: 1.3em;
+    max-width: 1.25em;
+    height: 1.25em;
+    width: auto;
+  }
+
+  .emoji-reaction-emoji-image {
+    vertical-align: middle;
+    object-fit: contain;
+  }
+
+  .notification-details {
+    min-width: 0;
+    word-wrap: break-word;
+    line-height: var(--post-line-height);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    flex: 1 1 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    .name-and-action {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .username {
+      font-weight: bolder;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .timeago {
+      margin-right: 0.2em;
+    }
+
+    .status-content {
+      margin: 0;
+      max-height: 300px;
+    }
+
+    h1 {
+      word-break: break-all;
+      margin: 0 0 0.3em;
+      padding: 0;
+      font-size: 1em;
+      line-height: 1.5;
+
+      small {
+        font-weight: lighter;
+      }
+    }
+
+    p {
+      margin: 0;
+      margin-top: 0;
+      margin-bottom: 0.3em;
+    }
+  }
+}

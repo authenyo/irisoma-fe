@@ -1,0 +1,36 @@
+$main-color: #f58d2c;
+$main-background: white;
+$darkened-background: whitesmoke;
+
+$fallback--bg: #121a24;
+$fallback--fg: #182230;
+$fallback--faint: rgb(185 185 186 / 50%);
+$fallback--text: #b9b9ba;
+$fallback--link: #d8a070;
+$fallback--icon: #666;
+$fallback--lightBg: rgb(21 30 42);
+$fallback--lightText: #b9b9ba;
+$fallback--border: #222;
+$fallback--cRed: #f00;
+$fallback--cBlue: #0095ff;
+$fallback--cGreen: #0fa00f;
+$fallback--cOrange: orange;
+
+$fallback--alertError: rgb(211 16 20 / 50%);
+$fallback--alertWarning: rgb(111 111 20 / 50%);
+
+$fallback--panelRadius: 10px;
+$fallback--checkboxRadius: 2px;
+$fallback--btnRadius: 4px;
+$fallback--inputRadius: 4px;
+$fallback--tooltipRadius: 5px;
+$fallback--avatarRadius: 4px;
+$fallback--avatarAltRadius: 10px;
+$fallback--attachmentRadius: 10px;
+$fallback--chatMessageRadius: 10px;
+
+$fallback--buttonShadow: 0 0 2px 0 rgb(0 0 0 / 100%),
+  0 1px 0 0 rgb(255 255 255 / 20%) inset,
+  0 -1px 0 0 rgb(0 0 0 / 20%) inset;
+
+$status-margin: 0.75em;

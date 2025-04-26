@@ -1,0 +1,90 @@
+@import "src/variables";
+
+.settings-modal {
+  overflow: hidden;
+
+  .setting-list,
+  .option-list {
+    list-style-type: none;
+    padding-left: 2em;
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    .suboptions {
+      margin-top: 0.3em;
+    }
+  }
+
+  .setting-description {
+    margin-top: 0.2em;
+    margin-bottom: 2em;
+    font-size: 70%;
+  }
+
+  .settings-modal-panel {
+    overflow: hidden;
+    transition: transform;
+    transition-timing-function: ease-in-out;
+    transition-duration: 300ms;
+    width: 1000px;
+    max-width: 90vw;
+    height: 90vh;
+
+    @media all and (max-width: 800px) {
+      max-width: 100vw;
+      height: 100%;
+    }
+
+    >.panel-body {
+      height: 100%;
+      overflow-y: hidden;
+
+      .btn {
+        min-height: 2em;
+      }
+
+      .btn:not(.dropdown-button) {
+        padding: 0 2em;
+      }
+    }
+  }
+
+  .settings-footer {
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 2;
+
+    >* {
+      margin-right: 0.5em;
+    }
+
+    .extra-content {
+      display: flex;
+      flex-grow: 1;
+    }
+  }
+
+  &.peek {
+    .settings-modal-panel {
+      /* Explanation:
+       * Modal is positioned vertically centered.
+       * 100vh - 100% = Distance between modal's top+bottom boundaries and screen
+       * (100vh - 100%) / 2 = Distance between bottom (or top) boundary and screen
+       * + 100% - we move modal completely off-screen, it's top boundary touches
+       *   bottom of the screen
+       * - 50px - leaving tiny amount of space so that titlebar + tiny amount of modal is visible
+       */
+      transform: translateY(calc(((100vh - 100%) / 2 + 100%) - 50px));
+
+      @media all and (max-width: 800px) {
+        /* For mobile, the modal takes 100% of the available screen.
+           This ensures the minimized modal is always 50px above the browser bottom
+           bar regardless of whether or not it is visible.
+        */
+        transform: translateY(calc(100% - 50px));
+      }
+    }
+  }
+}

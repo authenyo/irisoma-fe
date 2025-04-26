@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "stylelint-rscss/config",
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-html",
+    "stylelint-config-recommended-vue/scss"
+  ],
+  "rules": {
+    "declaration-no-important": true,
+    "rscss/no-descendant-combinator": false,
+    "rscss/class-format": [
+      false,
+      {
+        "component": "pascal-case",
+        "variant": "^-[a-z]\\w+",
+        "element": "^[a-z]\\w+"
+      }
+    ],
+    "selector-class-pattern": null,
+    "import-notation": null,
+    "custom-property-pattern": null,
+    "keyframes-name-pattern": null,
+    "scss/operator-no-newline-after": null,
+    "declaration-block-no-redundant-longhand-properties": [
+      true,
+      {
+        "ignoreShorthands": [
+          "grid-template",
+          "margin",
+          "padding",
+          "border",
+          "border-width",
+          "border-style",
+          "border-color",
+          "border-radius"
+        ]
+      }
+    ]
+  }
+}

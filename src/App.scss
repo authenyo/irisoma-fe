@@ -1,0 +1,916 @@
+// stylelint-disable rscss/class-format
+/* stylelint-disable no-descending-specificity */
+@import "./variables";
+@import "./panel";
+
+:root {
+  --navbar-height: 3.5rem;
+  --post-line-height: 1.4;
+  // Z-Index stuff
+  --ZI_media_modal: 9000;
+  --ZI_modals_popovers: 8500;
+  --ZI_modals: 8000;
+  --ZI_navbar_popovers: 7500;
+  --ZI_navbar: 7000;
+  --ZI_popovers: 6000;
+}
+
+html {
+  font-size: 14px;
+  // overflow-x: clip causes my browser's tab to crash with SIGILL lul
+}
+
+body {
+  font-family: sans-serif;
+  font-family: var(--interfaceFont, sans-serif);
+  margin: 0;
+  color: $fallback--text;
+  color: var(--text, $fallback--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+  overflow-x: clip;
+  overflow-y: scroll;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+// ## Custom scrollbars
+// Only show custom scrollbars on devices which
+// have a cursor/pointer to operate them
+@media (any-pointer: fine) {
+  * {
+    scrollbar-color: var(--btn) transparent;
+
+    &::-webkit-scrollbar {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-button,
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--btn);
+      box-shadow: var(--buttonShadow);
+      border-radius: var(--btnRadius);
+    }
+
+    // horizontal/vertical/increment/decrement are webkit-specific stuff
+    // that indicates whether we're affecting vertical scrollbar, increase button etc
+    // stylelint-disable selector-pseudo-class-no-unknown
+    &::-webkit-scrollbar-button {
+      --___bgPadding: 2px;
+
+      color: var(--btnText);
+      background-repeat: no-repeat, no-repeat;
+
+      &:horizontal {
+        background-size: 50% calc(50% - var(--___bgPadding)), 50% calc(50% - var(--___bgPadding));
+
+        &:increment {
+          background-image:
+            linear-gradient(45deg, var(--btnText) 50%, transparent 51%),
+            linear-gradient(-45deg, transparent 50%, var(--btnText) 51%);
+          background-position: top var(--___bgPadding) left 50%, right 50% bottom var(--___bgPadding);
+        }
+
+        &:decrement {
+          background-image:
+            linear-gradient(45deg, transparent 50%, var(--btnText) 51%),
+            linear-gradient(-45deg, var(--btnText) 50%, transparent 51%);
+          background-position: bottom var(--___bgPadding) right 50%, left 50% top var(--___bgPadding);
+        }
+      }
+
+      &:vertical {
+        background-size: calc(50% - var(--___bgPadding)) 50%, calc(50% - var(--___bgPadding)) 50%;
+
+        &:increment {
+          background-image:
+            linear-gradient(-45deg, transparent 50%, var(--btnText) 51%),
+            linear-gradient(45deg, transparent 50%, var(--btnText) 51%);
+          background-position: right var(--___bgPadding) top 50%, left var(--___bgPadding) top 50%;
+        }
+
+        &:decrement {
+          background-image:
+            linear-gradient(-45deg, var(--btnText) 50%, transparent 51%),
+            linear-gradient(45deg, var(--btnText) 50%, transparent 51%);
+          background-position: left var(--___bgPadding) top 50%, right var(--___bgPadding) top 50%;
+        }
+      }
+    }
+    // stylelint-enable selector-pseudo-class-no-unknown
+  }
+  // Body should have background to scrollbar otherwise it will use white (body color?)
+  html {
+    scrollbar-color: var(--selectedMenu) var(--wallpaper);
+    background: var(--wallpaper);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: $fallback--link;
+  color: var(--link, $fallback--link);
+}
+
+h4 {
+  margin: 0;
+}
+
+.iconLetter {
+  display: inline-block;
+  text-align: center;
+  font-weight: 1000;
+}
+
+i[class*="icon-"],
+.svg-inline--fa,
+.iconLetter {
+  color: $fallback--icon;
+  color: var(--icon, $fallback--icon);
+}
+
+.button-unstyled:hover,
+a:hover {
+  > i[class*="icon-"],
+  > .svg-inline--fa,
+  > .iconLetter {
+    color: var(--text);
+  }
+}
+
+nav {
+  z-index: var(--ZI_navbar);
+  background-color: $fallback--fg;
+  background-color: var(--topBar, $fallback--fg);
+  color: $fallback--faint;
+  color: var(--faint, $fallback--faint);
+  box-shadow: 0 0 4px rgb(0 0 0 / 60%);
+  box-shadow: var(--topBarShadow);
+  box-sizing: border-box;
+  height: var(--navbar-height);
+  position: fixed;
+}
+
+#sidebar {
+  grid-area: sidebar;
+}
+
+#modal {
+  position: absolute;
+  z-index: var(--ZI_modals);
+}
+
+.column.-scrollable {
+  top: var(--navbar-height);
+  position: sticky;
+}
+
+#main-scroller {
+  grid-area: content;
+  position: relative;
+}
+
+#notifs-column {
+  grid-area: notifs;
+}
+
+.app-bg-wrapper {
+  position: fixed;
+  height: 100%;
+  top: var(--navbar-height);
+  z-index: -1000;
+  left: 0;
+  right: -20px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: var(--wallpaper);
+  background-image: var(--body-background-image);
+  background-position: 50%;
+}
+
+.underlay {
+  grid-column: 1 / span 3;
+  grid-row: 1 / 1;
+  pointer-events: none;
+  background-color: rgb(0 0 0 / 15%);
+  background-color: var(--underlay, rgb(0 0 0 / 15%));
+  z-index: -1000;
+}
+
+.app-layout {
+  --miniColumn: 25rem;
+  --maxiColumn: 45rem;
+  --columnGap: 1em;
+  --status-margin: 0.75em;
+  --effectiveSidebarColumnWidth: minmax(var(--miniColumn), var(--sidebarColumnWidth, var(--miniColumn)));
+  --effectiveNotifsColumnWidth: minmax(var(--miniColumn), var(--notifsColumnWidth, var(--miniColumn)));
+  --effectiveContentColumnWidth: minmax(var(--miniColumn), var(--contentColumnWidth, var(--maxiColumn)));
+
+  position: relative;
+  display: grid;
+  grid-template-columns:
+    var(--effectiveSidebarColumnWidth)
+    var(--effectiveContentColumnWidth);
+  grid-template-areas: "sidebar content";
+  grid-template-rows: 1fr;
+  box-sizing: border-box;
+  margin: 0 auto;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-x: clip;
+
+  .column {
+    --___columnMargin: var(--columnGap);
+
+    display: grid;
+    grid-template-columns: 100%;
+    box-sizing: border-box;
+    grid-row: 1 / 1;
+    margin: 0 calc(var(--___columnMargin) / 2);
+    padding: calc(var(--___columnMargin)) 0;
+    row-gap: var(--___columnMargin);
+    align-content: start;
+
+    &:not(.-scrollable) {
+      margin-top: var(--navbar-height);
+    }
+
+    &:hover {
+      z-index: 2;
+    }
+
+    &.-full-height {
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    &.-scrollable {
+      --___paddingIncrease: calc(var(--columnGap) / 2);
+
+      position: sticky;
+      top: var(--navbar-height);
+      max-height: calc(100vh - var(--navbar-height));
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-left: calc(var(--___paddingIncrease) * -1);
+      padding-left: calc(var(--___paddingIncrease) + var(--___columnMargin) / 2);
+
+      // On browsers that don't support hiding scrollbars we enforce "show scrolbars" mode
+      // might implement old style of hiding scrollbars later if there's demand
+      @supports (scrollbar-width: none) or (-webkit-text-fill-color: initial) {
+        &:not(.-show-scrollbar) {
+          scrollbar-width: none;
+          margin-right: calc(var(--___paddingIncrease) * -1);
+          padding-right: calc(var(--___paddingIncrease) + var(--___columnMargin) / 2);
+
+          &::-webkit-scrollbar {
+            display: block;
+            width: 0;
+          }
+        }
+      }
+
+      .panel-heading.-sticky {
+        top: calc(var(--columnGap) / -1);
+      }
+    }
+  }
+
+  &.-has-new-post-button {
+    .column {
+      padding-bottom: 10rem;
+    }
+  }
+
+  &.-no-sticky-headers {
+    .column {
+      .panel-heading.-sticky {
+        position: relative;
+        top: 0;
+      }
+    }
+  }
+
+  .column-inner {
+    display: grid;
+    grid-template-columns: 100%;
+    box-sizing: border-box;
+    row-gap: 1em;
+    align-content: start;
+  }
+
+  &.-reverse:not(.-wide, .-mobile) {
+    grid-template-columns:
+      var(--effectiveContentColumnWidth)
+      var(--effectiveSidebarColumnWidth);
+    grid-template-areas: "content sidebar";
+  }
+
+  &.-wide {
+    grid-template-columns:
+      var(--effectiveSidebarColumnWidth)
+      var(--effectiveContentColumnWidth)
+      var(--effectiveNotifsColumnWidth);
+    grid-template-areas: "sidebar content notifs";
+
+    &.-reverse {
+      grid-template-columns:
+        var(--effectiveNotifsColumnWidth)
+        var(--effectiveContentColumnWidth)
+        var(--effectiveSidebarColumnWidth);
+      grid-template-areas: "notifs content sidebar";
+    }
+  }
+
+  &.-mobile {
+    grid-template-columns: 100vw;
+    grid-template-areas: "content";
+    padding: 0;
+
+    .column {
+      padding-top: 0;
+      margin: var(--navbar-height) 0 0 0;
+    }
+
+    .panel-heading,
+    .panel-heading::after,
+    .panel-heading::before,
+    .panel,
+    .panel::after {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    #sidebar,
+    #notifs-column {
+      display: none;
+    }
+  }
+
+  &.-normal {
+    #notifs-column {
+      display: none;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.button-default {
+  user-select: none;
+  color: $fallback--text;
+  color: var(--btnText, $fallback--text);
+  background-color: $fallback--fg;
+  background-color: var(--btn, $fallback--fg);
+  border: none;
+  border-radius: $fallback--btnRadius;
+  border-radius: var(--btnRadius, $fallback--btnRadius);
+  cursor: pointer;
+  box-shadow: $fallback--buttonShadow;
+  box-shadow: var(--buttonShadow);
+  font-size: 1em;
+  font-family: sans-serif;
+  font-family: var(--interfaceFont, sans-serif);
+
+  &.-sublime {
+    background: transparent;
+  }
+
+  i[class*="icon-"],
+  .svg-inline--fa {
+    color: $fallback--text;
+    color: var(--btnText, $fallback--text);
+  }
+
+  &::-moz-focus-inner {
+    border: none;
+  }
+
+  &:hover {
+    box-shadow: 0 0 4px rgb(255 255 255 / 30%);
+    box-shadow: var(--buttonHoverShadow);
+  }
+
+  &:active {
+    box-shadow:
+      0 0 4px 0 rgb(255 255 255 / 30%),
+      0 1px 0 0 rgb(0 0 0 / 20%) inset,
+      0 -1px 0 0 rgb(255 255 255 / 20%) inset;
+    box-shadow: var(--buttonPressedShadow);
+    color: $fallback--text;
+    color: var(--btnPressedText, $fallback--text);
+    background-color: $fallback--fg;
+    background-color: var(--btnPressed, $fallback--fg);
+
+    svg,
+    i {
+      color: $fallback--text;
+      color: var(--btnPressedText, $fallback--text);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: $fallback--text;
+    color: var(--btnDisabledText, $fallback--text);
+    background-color: $fallback--fg;
+    background-color: var(--btnDisabled, $fallback--fg);
+
+    svg,
+    i {
+      color: $fallback--text;
+      color: var(--btnDisabledText, $fallback--text);
+    }
+  }
+
+  &.toggled {
+    color: $fallback--text;
+    color: var(--btnToggledText, $fallback--text);
+    background-color: $fallback--fg;
+    background-color: var(--btnToggled, $fallback--fg);
+    box-shadow:
+      0 0 4px 0 rgb(255 255 255 / 30%),
+      0 1px 0 0 rgb(0 0 0 / 20%) inset,
+      0 -1px 0 0 rgb(255 255 255 / 20%) inset;
+    box-shadow: var(--buttonPressedShadow);
+
+    svg,
+    i {
+      color: $fallback--text;
+      color: var(--btnToggledText, $fallback--text);
+    }
+  }
+
+  &.danger {
+    // TODO: add better color variable
+    color: $fallback--text;
+    color: var(--alertErrorPanelText, $fallback--text);
+    background-color: $fallback--alertError;
+    background-color: var(--alertError, $fallback--alertError);
+  }
+}
+
+.button-unstyled {
+  background: none;
+  border: none;
+  outline: none;
+  display: inline;
+  text-align: initial;
+  font-size: 100%;
+  font-family: inherit;
+  padding: 0;
+  line-height: unset;
+  cursor: pointer;
+  box-sizing: content-box;
+  color: inherit;
+
+  &.-link {
+    color: $fallback--link;
+    color: var(--link, $fallback--link);
+  }
+
+  &.-fullwidth {
+    width: 100%;
+  }
+
+  &.-hover-highlight {
+    &:hover svg {
+      color: $fallback--lightText;
+      color: var(--lightText, $fallback--lightText);
+    }
+  }
+}
+
+input,
+textarea,
+.input {
+  &.unstyled {
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    height: unset;
+  }
+
+  --_padding: 0.5em;
+
+  border: none;
+  border-radius: $fallback--inputRadius;
+  border-radius: var(--inputRadius, $fallback--inputRadius);
+  box-shadow:
+    0 1px 0 0 rgb(0 0 0 / 20%) inset,
+    0 -1px 0 0 rgb(255 255 255 / 20%) inset,
+    0 0 2px 0 rgb(0 0 0 / 100%) inset;
+  box-shadow: var(--inputShadow);
+  background-color: $fallback--fg;
+  background-color: var(--input, $fallback--fg);
+  color: $fallback--lightText;
+  color: var(--inputText, $fallback--lightText);
+  font-family: sans-serif;
+  font-family: var(--inputFont, sans-serif);
+  font-size: 1em;
+  margin: 0;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  line-height: 2;
+  hyphens: none;
+  padding: 0 var(--_padding);
+
+  &:disabled,
+  &[disabled="disabled"],
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &[type="range"] {
+    background: none;
+    border: none;
+    margin: 0;
+    box-shadow: none;
+    flex: 1;
+  }
+
+  &[type="radio"] {
+    display: none;
+
+    &:checked + label::before {
+      box-shadow: 0 0 2px black inset, 0 0 0 4px $fallback--fg inset;
+      box-shadow: var(--inputShadow), 0 0 0 4px var(--fg, $fallback--fg) inset;
+      background-color: var(--accent, $fallback--link);
+    }
+
+    &:disabled {
+      &,
+      & + label,
+      & + label::before {
+        opacity: 0.5;
+      }
+    }
+
+    + label::before {
+      flex-shrink: 0;
+      display: inline-block;
+      content: "";
+      transition: box-shadow 200ms;
+      width: 1.1em;
+      height: 1.1em;
+      border-radius: 100%; // Radio buttons should always be circle
+      box-shadow: 0 0 2px black inset;
+      box-shadow: var(--inputShadow);
+      margin-right: 0.5em;
+      background-color: $fallback--fg;
+      background-color: var(--input, $fallback--fg);
+      vertical-align: top;
+      text-align: center;
+      line-height: 1.1;
+      font-size: 1.1em;
+      box-sizing: border-box;
+      color: transparent;
+      overflow: hidden;
+    }
+  }
+
+  &[type="checkbox"] {
+    &:checked + label::before {
+      color: $fallback--text;
+      color: var(--inputText, $fallback--text);
+    }
+
+    &:disabled {
+      &,
+      & + label,
+      & + label::before {
+        opacity: 0.5;
+      }
+    }
+
+    + label::before {
+      flex-shrink: 0;
+      display: inline-block;
+      content: "✓";
+      transition: color 200ms;
+      width: 1.1em;
+      height: 1.1em;
+      border-radius: $fallback--checkboxRadius;
+      border-radius: var(--checkboxRadius, $fallback--checkboxRadius);
+      box-shadow: 0 0 2px black inset;
+      box-shadow: var(--inputShadow);
+      margin-right: 0.5em;
+      background-color: $fallback--fg;
+      background-color: var(--input, $fallback--fg);
+      vertical-align: top;
+      text-align: center;
+      line-height: 1.1;
+      font-size: 1.1em;
+      box-sizing: border-box;
+      color: transparent;
+      overflow: hidden;
+    }
+  }
+
+  &.resize-height {
+    resize: vertical;
+  }
+}
+
+// Textareas should have stock line-height + vertical padding instead of huge line-height
+textarea {
+  padding: var(--_padding);
+  line-height: var(--post-line-height);
+}
+
+option {
+  color: $fallback--text;
+  color: var(--text, $fallback--text);
+  background-color: $fallback--bg;
+  background-color: var(--bg, $fallback--bg);
+}
+
+.hide-number-spinner {
+  appearance: textfield;
+
+  &[type="number"]::-webkit-inner-spin-button,
+  &[type="number"]::-webkit-outer-spin-button {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.cards-list {
+  list-style: none;
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: 1fr 1fr;
+
+  li {
+    border: 1px solid var(--border);
+    border-radius: var(--inputRadius);
+    padding: 0.5em;
+    margin: 0.25em;
+  }
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-group {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+
+  button,
+  .button-dropdown {
+    position: relative;
+    flex: 1 1 auto;
+
+    &:not(:last-child),
+    &:not(:last-child) .button-default {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:not(:first-child),
+    &:not(:first-child) .button-default {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+.fa {
+  color: grey;
+}
+
+.mobile-shown {
+  display: none;
+}
+
+.badge {
+  box-sizing: border-box;
+  display: inline-block;
+  border-radius: 99px;
+  max-width: 10em;
+  min-width: 1.7em;
+  height: 1.3em;
+  padding: 0.15em;
+  vertical-align: middle;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 0.9em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.badge-notification {
+    background-color: $fallback--cRed;
+    background-color: var(--badgeNotification, $fallback--cRed);
+    color: white;
+    color: var(--badgeNotificationText, white);
+  }
+}
+
+.alert {
+  margin: 0 0.35em;
+  padding: 0 0.25em;
+  border-radius: $fallback--tooltipRadius;
+  border-radius: var(--tooltipRadius, $fallback--tooltipRadius);
+
+  &.error {
+    background-color: $fallback--alertError;
+    background-color: var(--alertError, $fallback--alertError);
+    color: $fallback--text;
+    color: var(--alertErrorText, $fallback--text);
+
+    .panel-heading & {
+      color: $fallback--text;
+      color: var(--alertErrorPanelText, $fallback--text);
+    }
+  }
+
+  &.warning {
+    background-color: $fallback--alertWarning;
+    background-color: var(--alertWarning, $fallback--alertWarning);
+    color: $fallback--text;
+    color: var(--alertWarningText, $fallback--text);
+
+    .panel-heading & {
+      color: $fallback--text;
+      color: var(--alertWarningPanelText, $fallback--text);
+    }
+  }
+
+  &.success {
+    background-color: var(--alertSuccess, $fallback--alertWarning);
+    color: var(--alertSuccessText, $fallback--text);
+
+    .panel-heading & {
+      color: var(--alertSuccessPanelText, $fallback--text);
+    }
+  }
+}
+
+.faint {
+  color: $fallback--faint;
+  color: var(--faint, $fallback--faint);
+}
+
+.faint-link {
+  color: $fallback--faint;
+  color: var(--faint, $fallback--faint);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.visibility-notice {
+  padding: 0.5em;
+  border: 1px solid $fallback--faint;
+  border: 1px solid var(--faint, $fallback--faint);
+  border-radius: $fallback--inputRadius;
+  border-radius: var(--inputRadius, $fallback--inputRadius);
+}
+
+.notice-dismissible {
+  padding-right: 4rem;
+  position: relative;
+
+  .dismiss {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5em;
+    color: inherit;
+  }
+}
+
+.fa-scale-110 {
+  &.svg-inline--fa,
+  &.iconLetter {
+    font-size: 1.1em;
+  }
+}
+
+.fa-old-padding {
+  &.iconLetter,
+  &.svg-inline--fa,
+  &-layer {
+    padding: 0 0.3em;
+  }
+}
+
+.veryfaint {
+  opacity: 0.25;
+}
+
+.login-hint {
+  text-align: center;
+
+  @media all and (min-width: 801px) {
+    display: none;
+  }
+
+  a {
+    display: inline-block;
+    padding: 1em 0;
+    width: 100%;
+  }
+}
+
+.btn.button-default {
+  min-height: 2em;
+}
+
+.new-status-notification {
+  position: relative;
+  font-size: 1.1em;
+  z-index: 1;
+  flex: 1;
+}
+
+@media all and (max-width: 800px) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes shakeError {
+  0% {
+    transform: translateX(0);
+  }
+
+  15% {
+    transform: translateX(0.375rem);
+  }
+
+  30% {
+    transform: translateX(-0.375rem);
+  }
+
+  45% {
+    transform: translateX(0.375rem);
+  }
+
+  60% {
+    transform: translateX(-0.375rem);
+  }
+
+  75% {
+    transform: translateX(0.375rem);
+  }
+
+  90% {
+    transform: translateX(-0.375rem);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+// Vue transitions
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-active {
+  opacity: 0;
+}
+/* stylelint-enable no-descending-specificity */
+
+.visible-for-screenreader-only {
+  display: block;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  visibility: visible;
+  clip: rect(0 0 0 0);
+  padding: 0;
+  position: absolute;
+}

@@ -1,0 +1,18 @@
+@mixin unfocused-style {
+  @content;
+
+  &:focus:not(:focus-visible, :hover) {
+    @content;
+  }
+}
+
+@mixin focused-style {
+  &:hover,
+  &:focus {
+    @content;
+  }
+
+  &:focus-visible {
+    @content;
+  }
+}

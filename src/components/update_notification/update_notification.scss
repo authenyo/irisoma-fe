@@ -1,0 +1,115 @@
+@import "src/variables";
+
+.UpdateNotification {
+  overflow: hidden;
+}
+
+.UpdateNotificationModal {
+  --__top-fringe: 15em; // how much pleroma-tan should stick her head above
+  --__bottom-fringe: 80em; // just reserving as much as we can, number is mostly irrelevant
+  --__right-fringe: 8em;
+
+  font-size: 15px;
+  position: relative;
+  transition: transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+
+  .text {
+    max-width: 40em;
+    padding-left: 1em;
+  }
+
+  @media all and (max-width: 800px) {
+    /* For mobile, the modal takes 100% of the available screen.
+       This ensures the minimized modal is always 50px above the browser
+       bottom bar regardless of whether or not it is visible.
+   */
+    width: 100vw;
+  }
+
+  @media all and (max-height: 600px) {
+    display: none;
+  }
+
+  .content {
+    overflow: hidden;
+    margin-top: calc(-1 * var(--__top-fringe));
+    margin-bottom: calc(-1 * var(--__bottom-fringe));
+    margin-right: calc(-1 * var(--__right-fringe));
+
+    &.-noImage {
+      .text {
+        padding-right: var(--__right-fringe);
+      }
+    }
+  }
+
+  .panel-body {
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: var(--border, $fallback--border);
+  }
+
+  .panel-footer {
+    z-index: 22;
+    position: relative;
+    border-width: 0;
+    grid-template-columns: auto;
+  }
+
+  .pleroma-tan {
+    object-fit: cover;
+    object-position: top;
+    transition: position, left, right, top, bottom, max-width, max-height;
+    transition-timing-function: ease-in-out;
+    transition-duration: 500ms;
+    width: 25em;
+    float: right;
+    z-index: 20;
+    position: relative;
+    shape-margin: 0.5em;
+    filter: drop-shadow(5px 5px 10px rgb(0 0 0 / 50%));
+    pointer-events: none;
+  }
+
+  .spacer-top {
+    min-height: var(--__top-fringe);
+  }
+
+  .spacer-bottom {
+    min-height: var(--__bottom-fringe);
+  }
+
+  .extra-info-group {
+    transition: max-height, padding, height;
+    transition-timing-function: ease-in;
+    transition-duration: 700ms;
+    max-height: 70vh;
+    mask:
+      linear-gradient(to top, white, transparent) bottom/100% 2px no-repeat,
+      linear-gradient(to top, white, white);
+  }
+
+  .art-credit {
+    text-align: right;
+  }
+
+  &.-peek {
+    /* Explanation:
+   * 100vh - 100% = Distance between modal's top+bottom boundaries and screen
+   * (100vh - 100%) / 2 = Distance between bottom (or top) boundary and screen
+   */
+    transform: translateY(calc(((100vh - 100%) / 2)));
+
+    .pleroma-tan {
+      float: right;
+      z-index: 10;
+      shape-image-threshold: 70%;
+    }
+
+    .extra-info-group {
+      max-height: 0;
+    }
+  }
+}

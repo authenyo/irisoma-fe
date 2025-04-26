@@ -1,0 +1,57 @@
+@import "../../variables";
+
+.Timeline {
+  .alert-dot {
+    border-radius: 100%;
+    height: 8px;
+    width: 8px;
+    position: absolute;
+    left: calc(50% - 4px);
+    top: calc(50% - 4px);
+    margin-left: 6px;
+    margin-top: -6px;
+    background-color: var(--badgeNeutral);
+  }
+
+  .alert-badge {
+    font-size: 0.75em;
+    line-height: 1;
+    text-align: right;
+    border-radius: var(--tooltipRadius);
+    position: absolute;
+    left: calc(50% - 0.5em);
+    top: calc(50% - 0.4em);
+    padding: 0.2em;
+    margin-left: 0.7em;
+    margin-top: -1em;
+    background-color: var(--badgeNeutral);
+    color: var(--badgeNeutralText);
+  }
+
+  .loadmore-button {
+    position: relative;
+  }
+
+  &.-blocked {
+    cursor: progress;
+  }
+
+  .conversation-heading {
+    top: calc(var(--__panel-heading-height) * var(--currentPanelStack, 2));
+    z-index: 2;
+  }
+
+  &.-nonpanel {
+    .timeline-heading {
+      text-align: center;
+      line-height: 2.75em;
+      padding: 0 0.5em;
+
+      .button-default,
+      .alert {
+        line-height: 2em;
+        width: 100%;
+      }
+    }
+  }
+}
