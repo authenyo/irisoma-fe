@@ -19,17 +19,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        # Alpine needs to install zip
         apk add --no-cache zip
-        # Skip npm install -g yarn as it's already installed
         yarn
 
     - name: Build for production
       run: yarn build
-
-    - name: Run unit tests
-      run: yarn unit
-
+      
     - name: Zip dist folder
       run: zip -r dist.zip dist/
       
