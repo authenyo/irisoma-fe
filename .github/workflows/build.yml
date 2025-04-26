@@ -1,4 +1,4 @@
-name: build
+name: Build and Upload Node.js Project
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       run: zip -r dist.zip dist/
       
     - name: Upload zip artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist-artifact
         path: dist.zip
